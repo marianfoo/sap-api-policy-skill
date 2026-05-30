@@ -1,0 +1,32 @@
+sap-api-policy-evidence-workspace/
+research/
+*.pdf
+.claude/
+# machine-specific MCP client config (commit .cursor/mcp.json.example as the portable template)
+.cursor/mcp.json
+.DS_Store
+# never track cached SAP credentials / tokens / cookies
+api-hub-token-cache.json
+*token-cache*
+*-cache.json
+*.tokens
+*cookies*
+.env
+.env.*
+# certificates / private keys (e.g. SAP Passport cert for sap-notes)
+*.pfx
+*.p12
+*.pem
+*.key
+*.cer
+*.crt
+# Playwright / SAP browser session state
+*storage-state*
+storageState*.json
+*.session
+# deps / build / OS / editor noise
+node_modules/
+*.log
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,333 @@
+{
+  "skill_name": "sap-api-policy-evidence",
+  "evals": [
+    {
+      "id": 0,
+      "name": "published-api-ipaas-order-sync",
+      "prompt": "We're a manufacturing company on S/4HANA Cloud Public Edition. Our integration team uses Boomi to sync sales orders from our Shopify storefront into S/4 \u2014 roughly 500 orders/day through the standard Sales Order OData API. Legal is now asking whether this is OK under SAP's new 2026 API policy. Are we fine, or is there something we need to check?",
+      "expected_output": "Likely aligned at medium confidence: a third-party iPaaS calling a Published API for its Documented Use within rate limits is generally acceptable; the criterion is the API surface + usage pattern, not the tool. Should recommend verifying the exact API in API Hub + its rate limits, note API Hub tooling was unavailable, and carry the non-legal disclaimer.",
+      "files": [],
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories: Likely aligned, Likely not aligned, Needs SAP confirmation, or Not assessable from provided facts.",
+        "Concludes the scenario is likely aligned or otherwise NOT a policy violation, recognizing a third-party iPaaS calling a Published API for its documented purpose within limits is generally acceptable.",
+        "States that compliance depends on the SAP API surface and usage pattern, not on the integration tool (Boomi/iPaaS) itself.",
+        "Recommends verifying the exact Sales Order API is a Published API on SAP Business Accelerator Hub and checking its documented rate limits/quotas.",
+        "Includes an explicit disclaimer that this is not legal advice and not a final/binding SAP compliance decision.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Notes which evidence sources were unavailable this run (e.g. SAP API Hub tool) rather than asserting verified API Hub status it could not check."
+      ]
+    },
+    {
+      "id": 1,
+      "name": "odp-rfc-bulk-extraction",
+      "prompt": "We pull data out of our on-prem SAP BW/4HANA every night into Snowflake for analytics using ODP-RFC through a third-party ETL tool (full loads, ~40 tables). Someone forwarded me SAP's new API policy and now I'm worried. Is this allowed?",
+      "expected_output": "Likely not aligned: ODP-RFC for third-party access to BW/4HANA is explicitly not permitted (SAP Note 3255746), and nightly full loads are large-scale extraction under Section 2.2.2. Should recommend endorsed pathways (SAP Business Data Cloud + Delta Sharing, SLT) and engaging the SAP account team for a migration path. Non-legal disclaimer present.",
+      "files": [],
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "Concludes the scenario is Likely not aligned (or clearly problematic), not acceptable as-is.",
+        "Identifies ODP-RFC as not permitted for customer/third-party access to BW/4HANA, ideally citing SAP Note 3255746.",
+        "Identifies the nightly full loads as large-scale / systematic data extraction governed by Section 2.2.2 of the policy.",
+        "Recommends at least one SAP-endorsed data pathway as the alternative (e.g. SAP Business Data Cloud + Delta Sharing, or SLT).",
+        "Recommends engaging the SAP account team / support for a migration path.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Warns that wrapping or proxying ODP-RFC through custom code, a gateway, or another intermediary would not cure the policy issue because anti-circumvention controls apply."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "agentic-mcp-direct-s4hana",
+      "prompt": "We built an internal AI assistant where an LLM agent can call our S/4HANA APIs directly through a custom MCP server we wrote \u2014 the agent decides which API to call based on the user's chat request. Is this compliant with the SAP API policy, and if not what should we change?",
+      "expected_output": "Likely not aligned / needs SAP confirmation: an autonomous LLM agent that plans/selects/executes SAP API call sequences falls under Section 2.2.2 and requires an endorsed pathway. A custom self-built MCP server wired directly to SAP APIs is the red-flag case; recommend MCP Gateway on SAP Integration Suite and/or A2A via Joule. Non-legal disclaimer present.",
+      "files": [],
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "Concludes the scenario is Likely not aligned or Needs SAP confirmation (not simply 'compliant').",
+        "Identifies that an autonomous LLM agent that plans/selects/executes SAP API call sequences falls under Section 2.2.2 and requires an SAP-endorsed architecture/pathway.",
+        "Recommends MCP Gateway on SAP Integration Suite (and/or A2A via Joule / Agent Gateway) as the endorsed pathway.",
+        "Identifies the custom self-built MCP server connected directly to SAP APIs as the specific red flag.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Warns that a custom wrapper or direct custom MCP layer must not be used to bypass API controls; it should be replaced or fronted by an endorsed/governed pathway."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "outbound-event-callback",
+      "prompt": "Our S/4HANA Cloud system publishes outbound business events to SAP Event Mesh, which then calls our webhook. Does the new API policy prohibit this because SAP is sending data to a non-SAP endpoint?",
+      "expected_output": "Should explain that outbound events/callbacks from SAP are out of scope of the inbound API Policy per FAQ Q12, but still governed by product/event documentation and security/data rules. Should not call it a violation merely because a non-SAP webhook receives the event. Must include disclaimer, fixed assessment category, and confidence.",
+      "files": [],
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low.",
+        "Identifies the flow as outbound from SAP to an external endpoint, not an inbound third-party call into SAP.",
+        "Explains that outbound events/callbacks are out of scope of the inbound API Policy per FAQ Q12 or equivalent policy baseline.",
+        "Directs the user to product-specific event/extensibility documentation and security/data-governance controls instead of treating it as automatically prohibited.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 4,
+      "name": "rise-remediation-responsibility",
+      "prompt": "We are moving to RISE with SAP. Some of our old integrations use non-published S/4HANA interfaces. Since SAP is operating the RISE landscape, does SAP have to fix or remediate these integrations for us under the API policy?",
+      "expected_output": "Needs SAP confirmation / customer responsibility unless contractually agreed: RISE operation does not automatically make non-published integrations compliant and remediation is not automatically in standard RISE scope. Should recommend checking contract/order documents and SAP account team.",
+      "files": [],
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low.",
+        "States that RISE does not automatically make non-published interface usage compliant.",
+        "States that remediation of customer-built integrations is not automatically in standard RISE scope unless contractually agreed.",
+        "Recommends checking the customer's RISE contract/order forms and raising the specific interfaces with SAP account/support.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 5,
+      "name": "partner-certification-not-enough",
+      "prompt": "A vendor says their SAP-certified add-on is automatically compliant with the 2026 API policy. It runs in our landscape and calls S/4HANA APIs. Can we rely on the certification and skip our own API review?",
+      "expected_output": "Should say certification is helpful evidence but not enough for a customer deployment: compliance depends on the actual APIs, documented use, controls, and customer configuration. Renewals may depend on current rules; customer remains responsible in their landscape.",
+      "files": [],
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low.",
+        "Explains that partner certification is useful evidence but does not automatically prove compliance in the customer's live deployment.",
+        "Requires verification of the actual APIs/interfaces used, their Published API / Documented Use status, and Specific Controls.",
+        "Mentions that certification renewals or current deployment compliance may depend on current SAP Integration Certification or policy expectations.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 6,
+      "name": "binary-answer-refusal",
+      "prompt": "Just answer yes or no, no caveats: can our custom RFC pull MARA and VBAK nightly into Databricks under the new SAP API policy?",
+      "expected_output": "Should refuse to give an unconditional yes/no. It should provide a technical assessment with disclaimer, likely not aligned or needs SAP confirmation due custom RFC/table-based nightly extraction, ask for exact product/deployment/interface details, and warn against bypassing controls through custom RFC wrappers.",
+      "files": [],
+      "expectations": [
+        "Does not comply with the user's request for an unconditional yes/no answer.",
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low.",
+        "Identifies nightly custom RFC extraction of SAP table data as a large-scale/systematic extraction red flag under Section 2.2.2 or equivalent policy baseline.",
+        "Warns that a custom RFC wrapper around SAP tables does not bypass API controls and must be assessed based on underlying SAP objects/interfaces.",
+        "Requests or lists the material missing facts, including product/deployment and exact interface/wrapper details, without asking for secrets.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 7,
+      "name": "gui-scripting-screen-scrape",
+      "prompt": "We run a UiPath bot that uses SAP GUI Scripting to read stock and transaction data from our on-premise SAP ECC (transaction MB52 and a few others) every hour across about 1,800 plants, because there's no standard API for exactly what we need. Is this a problem under SAP's new API policy?",
+      "expected_output": "Needs SAP confirmation / Likely not aligned: hourly large-scale GUI screen-scraping to harvest data is systematic extraction (2.2.2b) and a stability concern (2.2.1c), even though deterministic RPA itself is outside 2.2.2; GUI scripting is not a Published API. Recommend moving to released APIs and raising the gap via SAP Customer Influence / account team.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Recognizes that hourly large-scale UI/GUI scraping to harvest data is systematic data extraction implicating Section 2.2.2(b) and/or the system-stability control (2.2.1c), even though deterministic RPA itself is outside Section 2.2.2.",
+        "Notes that SAP GUI Scripting screen scraping is not a Published API and confers no Published-API status on the data path.",
+        "Recommends moving to published APIs (released OData/BAPI/RFC) and raising any genuine API gap via the SAP Customer Influence portal or SAP account team.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 8,
+      "name": "successfactors-bulk-analytics",
+      "prompt": "A third-party people-analytics SaaS connects to our SAP SuccessFactors Employee Central and pulls our entire employee population (~60,000 people, including compensation fields) every night through the OData V2 API, using Basic Auth. Is this OK under the API policy?",
+      "expected_output": "Needs SAP confirmation: EC OData is a Published integration API so third-party integration is not prohibited per se, but a full nightly extract of all employees incl. compensation is large-scale extraction (2.2.2b) plus tenant rate/quota controls (2.1); also flag Basic Auth deprecation (OAuth) and reporting-vs-integration guidance.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Recognizes the SuccessFactors Employee Central OData API is a Published/documented integration API, so third-party integration is not prohibited per se.",
+        "Flags the full-population nightly extract (including compensation/personal data) as large-scale/systematic extraction under Section 2.2.2(b) and tenant rate/quota controls (Section 2.1), distinct from ordinary transactional integration.",
+        "Notes a security/technical requirement such as the Basic Auth deprecation (migrate to OAuth 2.0) or SuccessFactors reporting-vs-integration guidance.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 9,
+      "name": "direct-hana-sql",
+      "prompt": "Our BI team wants a direct SQL/JDBC connection to the SAP HANA database under our S/4HANA Cloud (RISE, private edition) to build Power BI reports, instead of going through OData services. Is that allowed?",
+      "expected_output": "Likely not aligned: direct DB/SQL access to the managed S/4HANA Cloud HANA DB is not permitted (SaaS gives access via the application layer, not the database; SAP Note 3169613). Recommend released CDS/OData or an endorsed data pathway (Datasphere / BDC / Delta Sharing).",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Concludes direct database/SQL access to the managed S/4HANA Cloud HANA database is not permitted because the SaaS provides access via the application layer, not the database (ideally citing SAP Note 3169613 or equivalent).",
+        "Recommends the documented alternatives: released CDS views / OData services, or an endorsed data pathway (SAP Datasphere / Business Data Cloud / Delta Sharing).",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 10,
+      "name": "analytical-cds-good-path",
+      "prompt": "We extract finance data from S/4HANA Cloud Public Edition into SAP Datasphere using the released analytical CDS views exposed as OData V4 analytical services with $apply aggregation, on a documented delta basis. Is this compliant with the new API policy?",
+      "expected_output": "Likely aligned: released analytical CDS views / OData V4 analytical services into Datasphere is a documented/endorsed analytical access pattern, not prohibited extraction; note documented controls/quotas still apply. Positive case contrasting with ODP-RFC.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Recognizes this as a documented/endorsed analytical access pattern (released analytical CDS views / OData V4 analytical services, SAP Datasphere) rather than a prohibited extraction path.",
+        "Concludes it does not trip Section 2.2.2(b) because it uses an endorsed/documented data pathway, while noting any applicable documented controls/quotas still apply.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 11,
+      "name": "genai-rag-vectordb",
+      "prompt": "We sync master data and business documents from S/4HANA Cloud via OData into a vector database every week so our internal Azure OpenAI assistant can answer employee questions (retrieval-augmented, read-only; the assistant itself does NOT call SAP at query time). Is this compliant?",
+      "expected_output": "Needs SAP confirmation: RAG that does not plan/execute SAP API calls at query time is not the agentic 2.2.2(a) case, but the weekly systematic copy of SAP data into an external vector store is large-scale extraction under 2.2.2(b) needing an endorsed data pathway / documented bulk pattern depending on volume and Documented Use.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Distinguishes this from agentic AI under Section 2.2.2(a): a RAG assistant that does not plan/select/execute SAP API calls at query time is not the autonomous-agent case.",
+        "Identifies the weekly systematic copy of SAP data into an external vector store as large-scale data extraction under Section 2.2.2(b), so it needs an endorsed data pathway or documented bulk pattern (e.g. Business Data Cloud / Delta Sharing) depending on volume and Documented Use.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 12,
+      "name": "isv-embedded-agent",
+      "prompt": "We're an SAP partner building a commercial app on SAP BTP that calls our customers' S/4HANA Cloud APIs. We want to embed an LLM that automatically decides which S/4HANA API to call and fires it for the end user. Our product is SAP-certified. Can we ship this to customers as-is?",
+      "expected_output": "Likely not aligned / Needs SAP confirmation: the embedded LLM auto-selecting and firing S/4 API calls is agentic use under 2.2.2(a) requiring an endorsed pathway (MCP Gateway on Integration Suite / Agent Gateway / A2A); SAP certification does not make it compliant in each customer landscape (Q52/Q53) and each customer must use Published APIs within Documented Use.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Identifies the embedded LLM auto-selecting and executing S/4HANA API calls as agentic use under Section 2.2.2(a) that requires an SAP-endorsed pathway (e.g. MCP Gateway on SAP Integration Suite / Agent Gateway / A2A), not direct custom firing.",
+        "States that SAP certification does not by itself make it compliant in each customer's live landscape; the customer remains responsible and each must use Published APIs within Documented Use (FAQ Q52/Q53).",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 13,
+      "name": "adt-dev-mcp-readonly",
+      "prompt": "We run a customer-operated MCP server that bridges Claude Code to our on-premise ECC 6.0 for read-only ABAP developer support \u2014 it reads source code, DDIC metadata, and function-module interfaces via standard and custom Z RFCs. No business data, no writes. Is this within the endorsed developer-tooling channel (FAQ #33) or is it caught by Section 2.2.2?",
+      "expected_output": "Likely within the endorsed developer-tooling channel (FAQ Q33: ADT/dev metadata, source, FM interfaces via dev tooling incl. custom utilities on the documented Eclipse Java SDK), NOT business-data access and NOT 2.2.2(a) agentic. BUT flag the Z-RFC caveat \u2014 a Z-RFC could expose business data / wrap non-released objects, which would leave the carve-out; verify object-by-object. Likely aligned or Needs SAP confirmation depending on the Z-RFC nuance.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Recognizes read-only ABAP developer support (source code, DDIC, function-module/interface signatures) as developer tooling under FAQ Q33's endorsed development-tooling channel, not business-data access.",
+        "Distinguishes it from Section 2.2.2(a): a read-only developer assistant is not an autonomous agent planning/executing business API call sequences, and reading development metadata is not business-data extraction (2.2.2b).",
+        "Flags the custom Z-RFC angle as the key thing to verify \u2014 a Z-RFC could return business data or wrap non-released objects, which would move that part outside the dev-tooling carve-out.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 14,
+      "name": "legal-bindingness-mixed",
+      "prompt": "Two questions: (1) Is the new SAP API Policy even legally binding on our existing perpetual on-premise license \u2014 it's not in our contract? (2) Practically, are our external calls to SAP's non-released RFC function modules now forbidden?",
+      "expected_output": "Mixed: the skill must answer the technical half (external calls to SAP's non-released/internal RFCs = not aligned / needs confirmation per Section 1.2) with Assessment+Confidence, AND wall off the legal-bindingness question as outside an evidence-based technical assessment, routing it to SAP Legal / contract owner / account team. Must not guess binding vs non-binding.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Assesses the technical question \u2014 external calls to SAP's non-released/internal RFC function modules \u2014 as not aligned or needs confirmation per Section 1.2, with reasoning, kept distinct from the legal question.",
+        "Explicitly declines to rule on whether the API Policy is legally or contractually binding on the existing perpetual license, identifying that as a legal/contractual question outside an evidence-based technical assessment.",
+        "Routes the legal/contract question to the appropriate channel (SAP Legal / contract owner / account team) rather than guessing a binding/non-binding answer.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 15,
+      "name": "inventory-scan-mode",
+      "prompt": "Here are five interfaces our integrations use against SAP \u2014 tell us which are OK to keep using under the API policy and give us a scannable list: (1) the Sales Order OData API API_SALES_ORDER_SRV, (2) function module RFC_READ_TABLE, (3) function module SD_SALESDOCUMENT_CREATE, (4) ODP-RFC extraction, (5) CDS view I_SalesDocument.",
+      "expected_output": "Scan/inventory mode: a per-interface table classifying each (Published/released vs internal/prohibited/discouraged vs needs-check) with evidence per row, plus a one-line portfolio Assessment+Confidence. ODP-RFC = prohibited (Note 3255746); RFC_READ_TABLE = discouraged/restricted; SD_SALESDOCUMENT_CREATE = classic/not-released (use released Sales Order API); API_SALES_ORDER_SRV = Published; I_SalesDocument = released CDS. Note evidence-as-of-date, not an SAP allowlist, and that published status still needs per-scenario checks.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Produces a per-interface inventory/table classifying each of the listed interfaces with the evidence/source for each row.",
+        "Correctly distinguishes the published/released entries (Sales Order OData API; released CDS view) from the problematic ones (ODP-RFC prohibited via Note 3255746; RFC_READ_TABLE and classic FM SD_SALESDOCUMENT_CREATE as non-released/discouraged needing the released alternative).",
+        "States this is evidence-as-of-date, not an SAP-sanctioned master allowlist, and that even published interfaces still need per-scenario checks for volume/agentic/bulk use.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 16,
+      "name": "third-party-mcp-gateway-agentic",
+      "prompt": "We don't want to pay for SAP Integration Suite. We'll run our own third-party MCP gateway (also used for non-SAP systems) that enforces rate limits, auth, and audit, and let our AI agents reach our on-premise S/4HANA through it. Is that allowed under the API policy?",
+      "expected_output": "Should NOT flatly approve. For AGENTIC access SAP's endorsed pathways are specifically the Agent Gateway (A2A) and the Integration Suite MCP Gateway; \u00a72.2.2(a) requires an SAP-endorsed architecture, so a purely third-party gateway is likely not aligned / needs SAP confirmation for agentic use. Non-agentic integration over Published APIs via a third-party platform is fine (Q32). Cost/edition routed to account team.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Does not flatly approve the third-party gateway for AGENTIC access: identifies SAP's endorsed agentic pathways as specifically the Agent Gateway (A2A) and the MCP Gateway in SAP Integration Suite, and that \u00a72.2.2(a) requires an SAP-endorsed architecture.",
+        "Distinguishes non-agentic integration (a third-party platform consuming Published APIs within controls is aligned per FAQ Q32) from agentic access where the endorsed pathway is required.",
+        "Routes the cost / 'do we have to pay for Integration Suite' aspect to the SAP account team rather than opining on pricing.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 17,
+      "name": "agent-as-dialog-user",
+      "prompt": "Our chatbot calls SAP OData APIs as tools, but always in the logged-in end-user's identity via principal propagation (so SAP's own authorizations and audit apply), never as a technical user. The LLM decides which API to call for each question. Does the policy still restrict this?",
+      "expected_output": "Yes \u2014 \u00a72.2.2(a) still applies: an LLM autonomously selecting/executing SAP API calls is agentic regardless of identity. Principal propagation/named-user is good and necessary practice but does NOT by itself exempt it from needing an SAP-endorsed agentic pathway. Likely not aligned / needs confirmation.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Concludes the policy still applies: an LLM autonomously selecting/executing SAP API calls is agentic under \u00a72.2.2(a) regardless of the identity model.",
+        "States that principal propagation / acting in the named end-user identity is good and necessary practice (authorization, audit) but does NOT by itself exempt the scenario from needing an SAP-endorsed agentic pathway.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 18,
+      "name": "sac-embedded-azure-llm",
+      "prompt": "We want a chatbot inside SAP Analytics Cloud that uses an Azure OpenAI LLM to help users explore their dashboards and ask questions in natural language about data already shown to them. Does the API policy forbid using a non-SAP LLM here?",
+      "expected_output": "Should NOT treat a non-SAP LLM as prohibited per se (Q36/Q22 \u2014 policy restricts ungoverned access, not AI vendor choice). Verdict hinges on behavior: a UI assistant interpreting data already in SAC, without autonomously planning/executing SAP API call sequences or copying data to an external store, is not the \u00a72.2.2(a)/(b) case; if it autonomously drives SAP APIs or extracts data, that changes it. Likely aligned / needs confirmation, NOT a flat prohibition.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Does NOT treat using a non-SAP (Azure OpenAI) LLM as prohibited per se \u2014 the policy restricts ungoverned access patterns, not the choice of AI vendor (FAQ Q36/Q22).",
+        "Hinges the verdict on behavior: a UI assistant helping the user interpret data already in SAC, without autonomously planning/executing SAP API call sequences or extracting data to an external store, is not the \u00a72.2.2(a)/(b) case; autonomous API-driving or data copy-out would change it.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 19,
+      "name": "odbc-sql-connector-qlik",
+      "prompt": "We use Qlik Cloud with the SAP SQL/ODBC connector for BI and are migrating from on-prem to S/4HANA Cloud private edition. Can we keep using the SQL/ODBC connector, and do we need an extra license?",
+      "expected_output": "Technical: direct SQL/ODBC against the managed S/4HANA Cloud private-edition DB is not the documented application-layer access (Note 3169613) -> likely not aligned / needs confirmation; use released CDS/OData or an endorsed data pathway (BDC/Datasphere). The licensing question is routed to the SAP account team, not answered.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Concludes direct SQL/ODBC access to the managed S/4HANA Cloud (private edition) database is not the documented application-layer access path and is likely not aligned or needs confirmation (ideally citing SAP Note 3169613), recommending released CDS/OData or an endorsed data pathway (BDC/Datasphere).",
+        "Routes the licensing question (extra license for the connector) to the SAP account team rather than answering it.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 20,
+      "name": "celonis-process-mining",
+      "prompt": "Our process-mining tool (Celonis) extracts data from our SAP S/4HANA system. Given the new API policy and the SAP-Celonis dispute, are we now forbidden from using it?",
+      "expected_output": "Needs SAP confirmation with a STRONG legal wall. Technical: process mining = systematic/large-scale extraction under \u00a72.2.2(b); compliance depends on the extraction interface used (must be a documented/endorsed extractor, not a prohibited one like ODP-RFC). Must explicitly decline to opine on the antitrust litigation or predict its outcome and route it to legal/SAP. Note customers' right to their own data / \u00a74 legally-required export, without overstating it as blanket permission.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Assesses the technical pattern: process-mining data extraction from SAP is systematic/large-scale extraction under \u00a72.2.2(b), so compliance depends on using a documented/endorsed extraction interface (not a prohibited one such as ODP-RFC).",
+        "Explicitly declines to opine on the SAP-Celonis antitrust litigation or predict its outcome, identifying it as a legal matter outside an evidence-based technical assessment, and routes it to legal / the SAP account team.",
+        "Notes the customer's right to access their own data and that legally required data export is not limited by the policy (\u00a74), without overstating it as blanket permission.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    },
+    {
+      "id": 21,
+      "name": "custom-odata-on-released-cds",
+      "prompt": "We built a custom Z OData/RAP service on our on-premise S/4HANA, exposed through SAP Gateway and consumed by Fiori apps on BTP. It is built only on released CDS views and released APIs - no internal or reserved interfaces. Any restrictions under the API policy?",
+      "expected_output": "Likely aligned: a customer-owned custom OData/RAP service built only on released CDS/APIs is the Clean-Core-aligned, customer-owned pattern (Q27, C0 consumer rules), not a per-se violation; conditioned on the underlying objects genuinely being released and no control circumvention. Should NOT over-flag clean custom code.",
+      "expectations": [
+        "States a single labeled `Assessment:` value using one of the four fixed categories.",
+        "States a single labeled `Confidence:` value using exactly one of high, medium, or low; no hybrid or range labels.",
+        "Recognizes a customer-owned custom OData/RAP service built only on released CDS views / released APIs as the Clean-Core-aligned, customer-owned pattern (FAQ Q27), not a per-se violation.",
+        "Conditions alignment on the underlying objects genuinely being released (not internal/reserved) and on not circumventing API controls \u2014 recommends verifying the underlying objects' released status.",
+        "Cites at least one concrete official SAP source obtained via tools (a specific SAP Note ID, an SAP Help or Architecture Center page, or a released-object status), not only generic claims.",
+        "Includes an explicit not-legal-advice / not-final-SAP-decision disclaimer."
+      ]
+    }
+  ]
+}

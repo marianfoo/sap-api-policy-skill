@@ -1,0 +1,57 @@
+{
+  "_comment": "Portable reference config for the sap-api-policy-evidence skill. Copy to .cursor/mcp.json (gitignored), then fill in SAP_USERNAME/SAP_PASSWORD, set the SAP_SSO_STORAGE_STATE absolute path (same in all three authenticated servers = one login), and point the sap-notes 'node' arg at your local sap-mcp-servers clone. See MCP_SETUP.md for full details. You don't need all five servers.",
+  "mcpServers": {
+    "sap-docs": {
+      "url": "http://mcp-sap-docs.marianzeis.de/mcp"
+    },
+    "sap-api-hub": {
+      "command": "npx",
+      "args": ["-y", "sap-api-hub-mcp"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "AUTH_METHOD": "auto",
+        "SAP_USERNAME": "your.email@company.com",
+        "SAP_PASSWORD": "your_sap_password",
+        "SAP_SSO_STORAGE_STATE": "/ABS/PATH/.sap-mcp/sso-storage-state.json",
+        "SAP_LOGIN_URL": "https://me.sap.com/home"
+      }
+    },
+    "sap-roadmap": {
+      "command": "npx",
+      "args": ["-y", "sap-roadmap-mcp"],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "AUTH_METHOD": "auto",
+        "SAP_USERNAME": "your.email@company.com",
+        "SAP_PASSWORD": "your_sap_password",
+        "SAP_SSO_STORAGE_STATE": "/ABS/PATH/.sap-mcp/sso-storage-state.json",
+        "SAP_LOGIN_URL": "https://me.sap.com/home",
+        "ROADMAP_DEFAULT_RANGE": "CURRENT-LAST"
+      }
+    },
+    "sap-notes": {
+      "command": "node",
+      "args": ["/ABS/PATH/sap-mcp-servers/packages/notes/dist/mcp-server.js"],
+      "env": {
+        "AUTH_METHOD": "auto",
+        "SAP_USERNAME": "your.email@company.com",
+        "SAP_PASSWORD": "your_sap_password",
+        "SAP_SSO_STORAGE_STATE": "/ABS/PATH/.sap-mcp/sso-storage-state.json",
+        "SAP_LOGIN_URL": "https://me.sap.com/home"
+      }
+    },
+    "arc-1": {
+      "command": "npx",
+      "args": ["-y", "arc-1@latest"],
+      "env": {
+        "SAP_URL": "https://your-sap-host:44300",
+        "SAP_USER": "YOUR_SYSTEM_USER",
+        "SAP_PASSWORD": "your_system_password",
+        "SAP_CLIENT": "100",
+        "SAP_ALLOW_WRITES": "false",
+        "SAP_ALLOW_DATA_PREVIEW": "false",
+        "SAP_ALLOW_FREE_SQL": "false"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+interface:
+  display_name: "SAP API Policy Evidence"
+  short_description: "Assess SAP API policy scenarios with evidence"
+  default_prompt: "Use $sap-api-policy-evidence to assess this SAP API usage scenario with sourced evidence and a confidence rating."
+
+policy:
+  allow_implicit_invocation: true
