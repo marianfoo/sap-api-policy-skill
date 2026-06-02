@@ -1,3 +1,19 @@
+> **Input prompt.** This report was produced by running the prompt below in Cursor against the [`sap-api-policy-evidence`](../skills/sap-api-policy-evidence/SKILL.md) skill, with the SAP MCP servers connected. The skill's output report follows.
+
+```text
+Follow the skill at skills/sap-api-policy-evidence/SKILL.md.
+
+Assess this scenario: Is it allowed under the SAP API Policy to extract data from
+our BW/4HANA into Snowflake nightly via ODP-RFC through a third-party ETL tool?
+
+Do a runtime self-check of the MCP servers, gather live evidence (SAP Notes, SAP
+Docs / Architecture Center, API Hub, released-object data), and cite every source
+with its retrieval date. Write the full assessment report using the skill's report
+template, then save it as a markdown file at examples/01-odp-rfc-extraction.md.
+```
+
+---
+
 # SAP API Policy - Evidence Assessment
 
 > **Not legal or final SAP advice.** This is an evidence-based *technical* assessment. Only SAP, the applicable contract, or SAP support/account/legal channels can give a binding answer for a specific customer landscape. SAP does not publish a binary compliant/not-compliant decision matrix (API Policy FAQ Q49); this report gets as close as the evidence allows and flags what to confirm with SAP.

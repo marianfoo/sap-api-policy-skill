@@ -1,3 +1,19 @@
+> **Input prompt.** This report was produced by running the prompt below in Cursor against the [`sap-api-policy-evidence`](../skills/sap-api-policy-evidence/SKILL.md) skill, with the SAP MCP servers connected. The skill's output report follows.
+
+```text
+Follow the skill at skills/sap-api-policy-evidence/SKILL.md, in inventory/scan mode.
+
+Triage these interfaces for an S/4HANA private cloud system: API_SALES_ORDER_SRV,
+RFC_READ_TABLE, SD_SALESDOCUMENT_CREATE, ODP-RFC, I_SalesDocument.
+
+Resolve each interface from released-object and API Hub data plus SAP Notes. Return
+a one-line portfolio verdict, then one timestamped table with columns: interface,
+type, status, evidence (source + ID/URL + retrieved date), documented alternative,
+needs-full-assessment. Save it as a markdown file at examples/03-inventory-scan.md.
+```
+
+---
+
 # SAP API Policy - Inventory Scan
 
 > **Not legal or final SAP advice.** This is an evidence-based *technical* assessment. Only SAP, the applicable contract, or SAP support/account/legal channels can give a binding answer for a specific customer landscape. SAP does not publish a binary compliant/not-compliant decision matrix (API Policy FAQ Q49); this scan gets as close as the evidence allows and flags what still needs a full assessment.

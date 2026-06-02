@@ -1,3 +1,20 @@
+> **Input prompt.** This report was produced by running the prompt below in Cursor against the [`sap-api-policy-evidence`](../skills/sap-api-policy-evidence/SKILL.md) skill, with the SAP MCP servers connected. The skill's output report follows.
+
+```text
+Follow the skill at skills/sap-api-policy-evidence/SKILL.md.
+
+Assess this scenario: We want to connect a third-party AI agent to S/4HANA Cloud
+through our own custom MCP gateway, so it can autonomously read and create sales
+orders via the standard OData APIs based on a user chat. Is that aligned with the
+2026 SAP API Policy?
+
+Do a runtime self-check, gather live evidence and cite every source with its
+retrieval date, then write the full assessment report and save it as a markdown
+file at examples/02-third-party-ai-agent.md.
+```
+
+---
+
 # SAP API Policy - Evidence Assessment
 
 > **Not legal or final SAP advice.** This is an evidence-based *technical* assessment. Only SAP, the applicable contract, or SAP support/account/legal channels can give a binding answer for a specific customer landscape. SAP does not publish a binary compliant/not-compliant decision matrix (API Policy FAQ Q49); this report gets as close as the evidence allows and flags what to confirm with SAP.

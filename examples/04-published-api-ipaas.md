@@ -1,3 +1,26 @@
+> **Input prompt.** This report was produced by running the prompt below in Cursor against the [`sap-api-policy-evidence`](../skills/sap-api-policy-evidence/SKILL.md) skill, with the SAP MCP servers connected. The skill's output report follows.
+
+```text
+Follow the skill at skills/sap-api-policy-evidence/SKILL.md.
+
+Assess this scenario: We sync about 500 sales orders per day from Salesforce into
+S/4HANA Cloud (public edition) using Boomi as middleware, by calling the standard
+Sales Order OData API (API_SALES_ORDER_SRV) with OAuth 2.0. Is this aligned with
+the 2026 SAP API Policy?
+
+Lean on the SAP API Hub for this one. Search the SAP Business Accelerator Hub for
+the Sales Order API, fetch the artifact to confirm Published-API status, version,
+direction (inbound A2X), and authentication, then pull its resources/operations and
+the spec to check for documented rate limits, quotas, or deprecation. Use SAP Notes
+and released-object data only to cross-check. Cite every API Hub artifact with its
+URL, version, and retrieval date.
+
+Write the full assessment report using the skill's report template, then save it as
+a markdown file at examples/04-published-api-ipaas.md.
+```
+
+---
+
 # SAP API Policy - Evidence Assessment
 
 > **Not legal or final SAP advice.** This is an evidence-based *technical* assessment. Only SAP, the applicable contract, or SAP support/account/legal channels can give a binding answer for a specific customer landscape. SAP does not publish a binary compliant/not-compliant decision matrix (API Policy FAQ Q49); this report gets as close as the evidence allows and flags what to confirm with SAP.
